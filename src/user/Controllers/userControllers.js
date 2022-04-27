@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
 
+dotenv.config();
 const hashCode = process.env.HASHCODE;
 
 export const getHealthControllers = (req, res) => {
@@ -23,9 +25,9 @@ export const getProfileControllers = (req, res) => {
   res.status(200).send(user);
 };
 
-export const verifyUserControllers = (req, res) => {
-  const { salt } = req;
-  const hashString = bcrypt.hash(hashCode, salt);
+export const verifyUserControllers = async(req, res) => {
+  const { salt } = req.body;
+  const hashString = await bcrypt.hash(hashCode, salt);
   if (hashString) {
     res.status(200).send(hashString);
   }
