@@ -27,9 +27,13 @@ export const getProfileControllers = (req, res) => {
 
 export const verifyUserControllers = async(req, res) => {
   const { salt } = req.body;
-  const hashString = await bcrypt.hash(hashCode, salt);
-  if (hashString) {
-    res.status(200).send(hashString);
+  if(salt) {
+    const hashString = await bcrypt.hash(hashCode, salt);
+    if (hashString) {
+      res.status(200).send(hashString);
+    }
+    res.status(500).send("INTERNAL SERVER ERROR");
+  } else {
+    res.status(400).send("SALT NOT FOUND");
   }
-  res.status(500).send("INTERNAL SERVER ERROR");
 };
